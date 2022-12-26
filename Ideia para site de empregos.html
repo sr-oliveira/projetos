@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Aplicativo de Empregos e Serviços</title>
+  <script>   $(function() {
+    // Configurar autocomplete de categorias
+    $('#search-category').autocomplete({
+      source: '/api/categories'
+    });
+  
+    // Submeter formulário de busca
+    $('#search-form').submit(function(event) {
+      event.preventDefault();
+      const formData = $(this).serialize();
+      $.get('/api/search', formData, function(results) {
+        // Exibir resultados da busca na tabela
+        $('#search-results').html('');
+        results.forEach(function(result) {
+          $('#search-results').append(
+            '<tr><td>' + result.title + '</td><td>' + result.category + '</td></tr>'
+          );
+        });
+      });
+    });
+  });
+  </script>
+  <style>
+    body {
+  font-family: 'Open Sans', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #fafafa;
+}
+
+header {
+  background-color: rgb(5, 134, 106);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+header h1 {
+  margin: 0;
+  font-size: 28px;
+}
+
+nav {
+  display: flex;
+}
+
+nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
+
+nav li {
+  margin: 0 10px;
+}
+
+nav a {
+  color: #fff;
+  text-decoration: none;
+}
+
+main {
+  margin: 20px;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th, td {
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+th {
+  background-color: rgb(211, 145, 102);
+  color: rgb(245, 235, 192);
+}
+
+  
+</style>
+</head>
+<body>
+  <header>
+    <h1>Aplicativo de Empregos e Serviços</h1>
+    <nav>
+      <ul>
+        <li><a href="#">HOME</a></li>
+        <li><a href="#">ANÚNCIOS</a></li>
+        <li><a href="#">PERFIL</a></li>
+      </ul>
+    </nav>
+  </header>
+  <main>
+    <h2> Anúncios </h2>
+    <table>
+      <tr>
+        <th>Título</th>
+        <th>Categoria
+
+<!-- HTML -->
+<form id="search-form">
+    <label for="search-category">Categoria:</label>
+    <input type="text" id="search-category" name="category" placeholder="Digite a categoria desejada">
+    <button type="submit">Pesquisar</button>
+  </form>
+  <table id="search-results">
+    <tr>
+      <th>Título</th>
+      <th>Categoria</th>
+    </tr>
+  </table>
+  
+
+  <!-- HTML -->
+  <form id="application-form">
+    <label for="application-name">Nome:</label>
+    <input type="text" id="application-name" name="name" required>
+  

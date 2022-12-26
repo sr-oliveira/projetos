@@ -1,0 +1,30 @@
+<!-- HTML -->
+<form id="search-form">
+    <label for="search-category">Categoria:</label>
+    <input type="text" id="search-category" name="category" placeholder="Digite a categoria desejada">
+    <button type="submit">Pesquisar</button>
+  </form>
+  
+  <!-- JavaScript -->
+  $(function() {
+    // Configurar autocomplete de categorias
+    $('#search-category').autocomplete({
+      source: '/api/categories'
+    });
+  
+    // Submeter formulário de busca
+    $('#search-form').submit(function(event) {
+      event.preventDefault();
+      const formData = $(this).serialize();
+      $.get('/api/search', formData, function(results) {
+        // Exibir resultados da busca na tabela
+        $('#search-results').html('');
+        results.forEach(function(result) {
+          $('#search-results').append(
+            '<tr><td>' + result.title + '</td><td>' + result.category + '</td></tr>'
+          );
+        });
+      });
+    });
+  });
+  

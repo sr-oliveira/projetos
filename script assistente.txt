@@ -1,0 +1,41 @@
+import os
+from time import sleep
+import tkinter as tk
+
+# Cria uma janela principal
+root = tk.Tk()
+root.title("Contagem de arquivos")
+
+# Define a função que será chamada quando o botão for clicado
+def contar_arquivos():
+  # Obtém o caminho do diretório inserido pelo usuário
+  directory = entrada_diretorio.get()
+
+  # Percorre todas as pastas e subpastas do diretório
+  for root, dirs, files in os.walk(directory):
+    # Conta o número de arquivos na pasta atual
+    file_count = len(files)
+
+    # Verifica se a pasta atual tem mais de dez arquivos
+    if file_count > 10:
+      # Adiciona uma nova linha na área de saída com o caminho para a pasta e o número de arquivos nela
+      saida_texto.insert(tk.END, f'A pasta {root} tem {file_count} arquivos\n')
+
+# Cria um rótulo para o campo de entrada do diretório
+rotulo_diretorio = tk.Label(root, text="Inserir origem:")
+rotulo_diretorio.grid(row=0, column=0)
+
+# Cria um campo de entrada do diretório
+entrada_diretorio = tk.Entry(root)
+entrada_diretorio.grid(row=0, column=1)
+
+# Cria um botão para iniciar a contagem de arquivos
+botao_contar = tk.Button(root, text="Contar arquivos", command=contar_arquivos)
+botao_contar.grid(row=1, column=0, columnspan=2)
+
+# Cria uma área de saída para exibir os resultados
+saida_texto = tk.Text(root)
+saida_texto.grid(row=2, column=0, columnspan=2)
+
+# Inicia a janela principal
+root.mainloop()
