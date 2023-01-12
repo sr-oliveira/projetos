@@ -1,0 +1,65 @@
+import sqlite3
+from kivy.app import App
+from kivy.uix.button import Button
+from kivy.uix.screenmanager import ScreenManager, Screen
+from kivy.uix.label import Label
+from kivy.uix.textinput import TextInput
+
+# Criação do banco de dados
+conn = sqlite3.connect('challenge.db')
+c = conn.cursor()
+
+c.execute("""CREATE TABLE IF NOT EXISTS groups (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                name TEXT,
+                members TEXT)""")
+
+c.execute("""CREATE TABLE IF NOT EXISTS challenges (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                group_id INTEGER,
+                name TEXT,
+                value REAL,
+                winner INTEGER)""")
+
+c.execute("""CREATE TABLE IF NOT EXISTS users (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                name TEXT,
+                email TEXT UNIQUE,
+                password TEXT)""")
+conn.commit()
+
+# Definição das telas
+class CreateChallengeScreen(Screen):
+    def create_challenge(self):
+        group_id = self.ids.group_id.text
+        name = self.ids.name.text
+        value = self.ids.value.text
+        c.execute("INSERT INTO challenges (group_id, name, value) VALUES (?, ?, ?)", (group_id, name, value))
+        conn.commit()
+
+class AcceptChallengeScreen(Screen):
+    def accept_challenge(self):
+        challenge_id = self.ids.challenge_id.text
+        c.execute("UPDATE challenges SET winner=1 WHERE id=?", (challenge_id,))
+        conn.commit()
+
+class LiveStreamScreen(Screen):
+    pass
+
+class PaymentScreen(Screen):
+    def make_payment(self):
+        challenge_id = self.ids.challenge_id.text
+        value = self.ids.value.text
+        # Implementação da lógica de pagamento
+
+class MainApp(App):
+    def build(self):
+        self.sm = ScreenManager()
+        self.sm.add_widget(CreateChallengeScreen(name='create'))
+        self.sm.add_widget(AcceptChallengeScreen(name='accept'))
+        self.sm.add_widget(LiveStreamScreen(name='live'))
+        self.sm.add_widget(PaymentScreen(name='payment'))
+        return self.sm
+
+if __name__ == '__main__':
+    MainApp().run()
